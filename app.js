@@ -2,33 +2,21 @@ const express = require('express');
 const app = express();
 
 /**
-MySQL connections
+Mongo DB connections
  */
-const mysql = require('mysql');
+const MongoClient = require('mongodb').MongoClient
 
-const myConnection  = require('express-myconnection');
-/**
- * database credentials in a separate config.js file
- */ 
-const config = require('./config');
+MongoClient.connect('mongodb://0d5442d5-0ee0-4-231-b9ee:GEOqpmMz7gADvEZ8I34lLyL3jLhmLQNpR07f8jowY2wKp5BxFz61f3WNuG3Q9nbo281oGmYzZ5R2oCp3M7dfUQ%3D%3D@0d5442d5-0ee0-4-231-b9ee.documents.azure.com:10255/?ssl=true', function (err, db) {
+  if (err) throw err
 
-/* const dbOptions = {
-	host:	  config.database.host,
-	user: 	  config.database.user,
-	password: config.database.password,
-	port: 	  config.database.port, 
-	database: config.database.db
-}
- */
-/**
- * 3 strategies can be used
- * single: Creates single database connection which is never closed.
- * ---------------------------------------------------------------------------------
- * pool: Creates pool of connections. Connection is auto release when response ends.
- * ---------------------------------------------------------------------------------
- * request: Creates new connection per new request. Connection is auto close when response ends.
- */ 
-//app.use(myConnection(mysql, dbOptions, 'pool'));
+  /* db.collection('mammals').find().toArray(function (err, result) {
+    if (err) throw err
+
+    console.log(result)
+  }) */
+
+  client.close();
+});
 
 /**
  * templating view engine
