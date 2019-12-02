@@ -1,22 +1,67 @@
 const express = require('express');
 const app = express();
 
+//application configuration details
+const config = require('./config');
+
 /**
 Mongo DB connections
  */
 const MongoClient = require('mongodb').MongoClient
 
-
-MongoClient.connect('mongodb://0d5442d5-0ee0-4-231-b9ee:GEOqpmMz7gADvEZ8I34lLyL3jLhmLQNpR07f8jowY2wKp5BxFz61f3WNuG3Q9nbo281oGmYzZ5R2oCp3M7dfUQ%3D%3D@0d5442d5-0ee0-4-231-b9ee.documents.azure.com:10255/?ssl=true', function (err, db) {
-  if (err) throw err
-
-  /* db.collection('families').find().toArray(function (err, result) {
+//show
+const findFamilies = function(db) {
+  db.collection('families').find().toArray(function (err, result) {
     if (err) throw err
-    console.log(result)
-  }) */
+    //SpeechRecognitionResultList.
+    //console.log(result)
+    result.forEach(element => {
+      console.log(element.children);
+    });
+  })
+}
 
+//insert
+const insertDocument = function(db) {
+  db.collection('families').insertOne( {
+          "id": "AndersenFamily",
+          "lastName": "Andersen",
+          "parents": [
+              { "firstName": "Thomas" },
+              { "firstName": "Mary Kay" }
+          ],
+          "children": [
+              { "firstName": "John", "gender": "male", "grade": 7 }
+          ],
+          "pets": [
+              { "givenName": "Fluffy" }
+          ],
+          "address": { "country": "USA", "state": "WA", "city": "Seattle" }
+      }, function(err, result) {
+      //assert.equal(err, null);
+      console.log("Inserted a document into the families collection.");
+  });
+  };
 
+  const insertDocument2 = function(db) {
+    db.collection('families').insertOne( {
+            "id": "Stam",
+            "lastName": "Stamer",
+            "address": { "country": "Russia", "state": "Kaliningradskaya Oblast", "city": "Kaliningrad" }
+        }, function(err, result) {
+        //assert.equal(err, null);
+        console.log("Inserted a document into the families collection.");
+    });
+    };
 
+//Mongo action
+MongoClient.connect(config.mongo_url, function (err, client) {
+  if (err) throw err
+  const db = client.db('familiesdb');
+
+  //insertDocument(db);
+  //insertDocument2(db);
+  //findFamilies(db);
 });
 
 /**
@@ -24,13 +69,6 @@ MongoClient.connect('mongodb://0d5442d5-0ee0-4-231-b9ee:GEOqpmMz7gADvEZ8I34lLyL3
  */ 
 app.set('view engine', 'ejs');
 
-//routes
-//const index = require('./routes/index');
-
-//test route
-app.get('/api', function(req, res, next){
-    res.json({ "message": 'response from API endpoint' });
-});
 
 /**
  * body-parser module is used to read HTTP POST data
@@ -55,9 +93,14 @@ app.use(session({
 //static files - css,js
 app.use(express.static('public'));
 
-//routes
-//app.use('/', index);
+//Files declarations
+//routes - files
+const login = require('./routes/login');
+const budget = require('./routes/budget');
 
+//routes
+app.use('/', login);
+app.use('/budget', budget);
 
 
 const port = process.env.PORT || 3100;
