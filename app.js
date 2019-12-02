@@ -6,6 +6,7 @@ Mongo DB connections
  */
 const MongoClient = require('mongodb').MongoClient
 
+
 MongoClient.connect('mongodb://0d5442d5-0ee0-4-231-b9ee:GEOqpmMz7gADvEZ8I34lLyL3jLhmLQNpR07f8jowY2wKp5BxFz61f3WNuG3Q9nbo281oGmYzZ5R2oCp3M7dfUQ%3D%3D@0d5442d5-0ee0-4-231-b9ee.documents.azure.com:10255/?ssl=true', function (err, db) {
   if (err) throw err
 
@@ -14,7 +15,7 @@ MongoClient.connect('mongodb://0d5442d5-0ee0-4-231-b9ee:GEOqpmMz7gADvEZ8I34lLyL3
     console.log(result)
   }) */
 
-  
+
 
 });
 
